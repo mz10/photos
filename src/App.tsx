@@ -125,6 +125,28 @@ const App = () => {
                          </button>
                     )}
                     <span>Přihlášen jako: <strong>{currentUser.name}</strong></span>
+                    {currentUser.role === 'admin' && (
+                        <button 
+                            onClick={async () => {
+                                try {
+                                    const response = await fetch('/api/index', {
+                                        method: 'POST'
+                                    });
+                                    const result = await response.json();
+                                    if (result.success) {
+                                        alert(`Indexováno ${result.processed} alb: ${result.albums.join(', ')}`);
+                                    } else {
+                                        alert('Indexování selhalo');
+                                    }
+                                } catch (error) {
+                                    console.error('Indexing error:', error);
+                                    alert('Chyba při indexování');
+                                }
+                            }}
+                        >
+                            Indexovat
+                        </button>
+                    )}
                     <button onClick={handleLogout}>Odhlásit se</button>
                 </div>
             </header>
